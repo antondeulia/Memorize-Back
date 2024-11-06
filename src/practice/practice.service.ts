@@ -34,7 +34,7 @@ export class PracticeService {
       messages: [
         {
           role: 'system',
-          content: `Сгенерируй уникальное и интерессное предложение на ${lang} языке;
+          content: `Сгенерируй уникальное и интерессное предложение на ${lang} языке, затем напиши перевод этого текста на русский, раздели их знаком |;
           от ${minLength} до ${maxLength} слов;
           ${levels?.length ? `Уровень сложности: ${levels.map((level) => level)};` : 'Любой уровень сложности'}
           ${topics?.length ? `На темы: ${topics.map((topic) => topic)};` : 'На любую тему'}
