@@ -12,7 +12,7 @@ export class PracticeController {
     return await this.practiceService.generateSentence(dto);
   }
 
-  @Get('check')
+  @Post('check')
   async check(@Body() dto: CheckDto) {
     return await this.practiceService.check(dto);
   }

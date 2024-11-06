@@ -17,7 +17,9 @@ export class PracticeService {
     });
   }
 
-  async generateSentence(dto: GenerateSentenceDto): Promise<string> {
+  async generateSentence(
+    dto: GenerateSentenceDto,
+  ): Promise<ChatCompletionMessage> {
     const {
       lang = 'english',
       levels,
@@ -32,7 +34,7 @@ export class PracticeService {
       messages: [
         {
           role: 'system',
-          content: `Сгенерируй предложение на ${lang} языке;
+          content: `Сгенерируй уникальное и интерессное предложение на ${lang} языке;
           от ${minLength} до ${maxLength} слов;
           ${levels?.length ? `Уровень сложности: ${levels.map((level) => level)};` : 'Любой уровень сложности'}
           ${topics?.length ? `На темы: ${topics.map((topic) => topic)};` : 'На любую тему'}
@@ -41,30 +43,28 @@ export class PracticeService {
       ],
     });
 
-    return res.choices[0].message.content;
+    return res.choices[0].message;
   }
 
-  async check({ text, userText }: CheckDto): Promise<string> {
+  async check({ text, userText }: CheckDto): Promise<ChatCompletionMessage> {
     const res = await this.openAi.chat.completions.create({
       model: openAiModel,
       messages: [
         {
-          role: 'system',
-          content: `Проверь перевод. Игнорируй граматические и орфографические ошибки и неправильность написания слов
+          role: 'user',
+          content: `
+                    Игнорируй граматические ошибки, орфографиечские ошибки, неправильный порядок слов и неправильность написания слов, если это не меняет сути.
                     Если перевод правильный, верни в начале true и напиши как было бы лучше перевести.
                     Если перевод неверный, верни в начале строки false и обясни почему.
-          `,
-        },
-        {
-          role: 'user',
-          content: `Оригинальный текст: "${text}";
+
+                    Оригинальный текст: "${text}";
                     Перевод пользователя: "${userText}";
           `,
         },
       ],
-      temperature: 0.5,
+      temperature: 0.1,
     });
 
-    return res.choices[0].message.content;
+    return res.choices[0].message;
   }
 }
