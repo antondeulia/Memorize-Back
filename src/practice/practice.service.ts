@@ -4,7 +4,7 @@ import OpenAI from 'openai';
 import { CheckDto } from './dtos/check.dto';
 import { ChatCompletionMessage } from 'openai/resources';
 import { GenerateSentenceDto } from './dtos/generate-sentence.dto';
-import { openAiModel } from 'src/constants';
+import { openAiModel } from '../constants';
 
 @Injectable()
 export class PracticeService {
